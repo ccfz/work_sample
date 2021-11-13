@@ -12,7 +12,7 @@ const Movie = () => {
   if (movies.length == 0) { return null; }
 
   const columnNames = ['#', 'Title', 'Rating', 'Count'];
-  const columnKeys = ['id', 'title', 'rating', 'count']
+  const columnKeys = ['title', 'rating', 'count']
   return (
     <div style={styles.container}>
       <h1>Top 100</h1>
@@ -26,10 +26,11 @@ const Movie = () => {
           </tr>
         </thead>
         <tbody>
-          {movies.map((movie) => {
+          {movies.map((movie, index) => {
 
             return (
               <tr key={movie.id}>
+                <td>{index + 1}</td>
                 {columnKeys.map((key) => (
                   <td key={`${movie.id}:${key}`} >{movie[key]}</td>
                 ))}

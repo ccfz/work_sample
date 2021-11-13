@@ -1,9 +1,0 @@
-example_id                                   | status | run_time        |
--------------------------------------------- | ------ | --------------- |
-./spec/models/age_spec.rb[1:1]               | passed | 0.00409 seconds |
-./spec/models/movie_spec.rb[1:1]             | passed | 0.00148 seconds |
-./spec/models/occupation_spec.rb[1:1]        | passed | 0.02651 seconds |
-./spec/models/rating_spec.rb[1:1]            | passed | 0.02781 seconds |
-./spec/models/user_spec.rb[1:1]              | passed | 0.03598 seconds |
-./spec/requests/api/v1/movies_spec.rb[1:1:1] | passed | 0.02693 seconds |
-./spec/requests/api/v1/movies_spec.rb[1:2:1] | passed | 0.03292 seconds |

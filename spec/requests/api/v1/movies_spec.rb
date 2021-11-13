@@ -50,5 +50,27 @@ RSpec.describe "Api::V1::Movies", type: :request do
         })
       end
     end
+
+    context "order" do
+      it "should order movies by their rating and count" do
+        lotr_movie = create(:movie, title: 'Lord of the Rings')
+        m_movie = create(:movie, title: 'Matrix')
+        hr_movie = create(:movie, title: 'Harry Potter')
+
+        create(:rating, movie: hr_movie, rating: 4)
+        create(:rating, movie: lotr_movie, rating: 3)
+        create(:rating, movie: m_movie, rating: 3)
+        create(:rating, movie: m_movie, rating: 3)
+        get "/api/v1/movies/index"
+
+        parsed_body = JSON.parse(response.body)
+
+        pp parsed_body
+
+        expect(parsed_body[0]["title"]).to eq('Harry Potter')
+        expect(parsed_body[1]["title"]).to eq('Matrix')
+        expect(parsed_body[2]["title"]).to eq('Lord of the Rings')
+      end
+    end
   end
 end

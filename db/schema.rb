@@ -10,7 +10,7 @@
 #
 # It's strongly recommended that you check this file into your version control system.
 
-ActiveRecord::Schema.define(version: 2021_11_13_114448) do
+ActiveRecord::Schema.define(version: 2021_11_13_172200) do
 
   # These are extensions that must be enabled in order to support this database
   enable_extension "pgcrypto"
@@ -45,7 +45,7 @@ ActiveRecord::Schema.define(version: 2021_11_13_114448) do
   end
 
 
-  create_view "movie_ratings", sql_definition: <<-SQL
+  create_view "movie_ratings", materialized: true, sql_definition: <<-SQL
       SELECT movies.id,
       movies.title,
           CASE
@@ -55,6 +55,12 @@ ActiveRecord::Schema.define(version: 2021_11_13_114448) do
       round(avg(ratings.rating), 2) AS rating
      FROM (movies
        LEFT JOIN ratings ON ((ratings.movie_id = movies.id)))
-    GROUP BY movies.id;
+    GROUP BY movies.id
+   HAVING (count(ratings.*) > 19)
+    ORDER BY (round(avg(ratings.rating), 2)) DESC,
+          CASE
+              WHEN (count(ratings.*) > 100) THEN round((count(ratings.*))::numeric, '-2'::integer)
+              ELSE (count(ratings.*))::numeric
+          END DESC;
   SQL
 end

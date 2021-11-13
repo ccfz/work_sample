@@ -1,6 +1,6 @@
 class InitialSchema < ActiveRecord::Migration[6.0]
   def change
-    create_table 'ages', id: :integer, default: nil, force: :cascade do |t|
+    create_table 'ages', id: :integer, force: :cascade do |t|
       t.string 'title', limit: 16
     end
 
@@ -9,14 +9,14 @@ class InitialSchema < ActiveRecord::Migration[6.0]
       t.string 'genres', limit: 256
     end
 
-    create_table 'occupations', id: :integer, default: nil, force: :cascade do |t|
+    create_table 'occupations', id: :integer, force: :cascade do |t|
       t.string 'title', limit: 32
     end
 
     create_table 'ratings', id: :integer, force: :cascade do |t|
       t.integer 'user_id'
       t.integer 'movie_id'
-      t.integer 'rating', limit: 2
+      t.decimal 'rating', precision: 11, scale: 2
       t.datetime 'created_at'
       t.index %w[movie_id user_id], name: 'movie_id_user_id', unique: true
     end

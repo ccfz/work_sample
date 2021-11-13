@@ -10,13 +10,13 @@
 #
 # It's strongly recommended that you check this file into your version control system.
 
-ActiveRecord::Schema.define(version: 2021_11_13_083645) do
+ActiveRecord::Schema.define(version: 2021_11_13_114448) do
 
   # These are extensions that must be enabled in order to support this database
   enable_extension "pgcrypto"
   enable_extension "plpgsql"
 
-  create_table "ages", id: :integer, force: :cascade do |t|
+  create_table "ages", id: :serial, force: :cascade do |t|
     t.string "title", limit: 16
   end
 
@@ -25,14 +25,14 @@ ActiveRecord::Schema.define(version: 2021_11_13_083645) do
     t.string "genres", limit: 256
   end
 
-  create_table "occupations", id: :integer, force: :cascade do |t|
+  create_table "occupations", id: :serial, force: :cascade do |t|
     t.string "title", limit: 32
   end
 
   create_table "ratings", id: :serial, force: :cascade do |t|
     t.integer "user_id"
     t.integer "movie_id"
-    t.integer "rating", limit: 2
+    t.decimal "rating", precision: 11, scale: 2
     t.datetime "created_at"
     t.index ["movie_id", "user_id"], name: "movie_id_user_id", unique: true
   end
@@ -44,4 +44,14 @@ ActiveRecord::Schema.define(version: 2021_11_13_083645) do
     t.string "zipcode", limit: 16
   end
 
+
+  create_view "movie_ratings", sql_definition: <<-SQL
+      SELECT movies.id,
+      movies.title,
+      count(ratings.*) AS count,
+      round(avg(ratings.rating), 2) AS rating
+     FROM (movies
+       LEFT JOIN ratings ON ((ratings.movie_id = movies.id)))
+    GROUP BY movies.id;
+  SQL
 end

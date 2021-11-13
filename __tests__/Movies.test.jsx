@@ -32,17 +32,17 @@ describe('Movie', () => {
     expect(within(button).getByText('Calculate')).toBeTruthy();
   });
 
-  test('renders the movies', () => {
+  test('renders the movies title, rating and count', () => {
     useMovies.mockReturnValue([
-      {id: 1, title: "Toy Story (1995)", genres: "Animation|Children's|Comedy"},
-      {id: 2, title: "Jumanji (1995)", genres: "Animation|Children's|Fantasy"}
+      {id: 1, title: "Toy Story (1995)", rating: "4.50", count: '232' },
+      {id: 2, title: "Jumanji (1995)", rating: "3", count: '232' }
     ])
     render(<Movie />);
 
     expect(screen.getByText('Toy Story (1995)')).toBeTruthy();
-    expect(screen.getByText("Animation|Children's|Comedy")).toBeTruthy();
+    expect(screen.getByText("4.50")).toBeTruthy();
 
     expect(screen.getByText('Jumanji (1995)')).toBeTruthy();
-    expect(screen.getByText("Animation|Children's|Fantasy")).toBeTruthy();
+    expect(screen.getByText("3")).toBeTruthy();
   })
 });

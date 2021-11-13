@@ -14,6 +14,7 @@ const useMovies = () => {
         throw new Error("Network response was not ok.");
       })
       .then(response => {
+        console.log(response[0])
         setMovies(response)
       })
   }, [])

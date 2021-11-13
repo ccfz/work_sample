@@ -9,4 +9,3 @@ FROM movies
 LEFT JOIN ratings ON ratings.movie_id = movies.id
 GROUP BY movies.id
 HAVING count(ratings) > 19
-ORDER BY RATING DESC, count DESC

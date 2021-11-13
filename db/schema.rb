@@ -56,11 +56,8 @@ ActiveRecord::Schema.define(version: 2021_11_13_172200) do
      FROM (movies
        LEFT JOIN ratings ON ((ratings.movie_id = movies.id)))
     GROUP BY movies.id
-   HAVING (count(ratings.*) > 19)
-    ORDER BY (round(avg(ratings.rating), 2)) DESC,
-          CASE
-              WHEN (count(ratings.*) > 100) THEN round((count(ratings.*))::numeric, '-2'::integer)
-              ELSE (count(ratings.*))::numeric
-          END DESC;
+   HAVING (count(ratings.*) > 19);
   SQL
+  add_index "movie_ratings", ["id"], name: "index_movie_ratings_on_id", unique: true
+
 end

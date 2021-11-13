@@ -48,7 +48,10 @@ ActiveRecord::Schema.define(version: 2021_11_13_114448) do
   create_view "movie_ratings", sql_definition: <<-SQL
       SELECT movies.id,
       movies.title,
-      count(ratings.*) AS count,
+          CASE
+              WHEN (count(ratings.*) > 100) THEN round((count(ratings.*))::numeric, '-2'::integer)
+              ELSE (count(ratings.*))::numeric
+          END AS count,
       round(avg(ratings.rating), 2) AS rating
      FROM (movies
        LEFT JOIN ratings ON ((ratings.movie_id = movies.id)))

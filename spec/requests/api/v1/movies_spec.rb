@@ -60,8 +60,6 @@ RSpec.describe "Api::V1::Movies", type: :request do
       create_list(:user_with_rating, 20, movie: lotr_movie, age: age)
       create(:rating, movie: lotr_movie)
 
-      MovieRating.refresh
-
       get "/api/v1/movies/filter", params: { "age": "Under 18" }
 
       parsed_body = JSON.parse(response.body)

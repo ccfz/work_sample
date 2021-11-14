@@ -7,4 +7,16 @@ class Api::V1::MoviesController < ApplicationController
               .limit(100)
     render json: movies
   end
+
+  def filter
+    age = filtering_params(params)
+    movies = Movie.filter_by_age(age)
+              .limit(100)
+              .order(rating: :desc, count: :desc)
+    render json: movies
+  end
+
+  def filtering_params(params)
+    params[:age]
+  end
 end

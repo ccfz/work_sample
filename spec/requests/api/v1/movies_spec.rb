@@ -52,4 +52,26 @@ RSpec.describe "Api::V1::Movies", type: :request do
       end
     end
   end
+
+  describe "GET /filter" do
+    it "returns movie ratings made by users of the selected age" do
+      lotr_movie = create(:movie, title: 'Lord of the Rings')
+      age = create(:age, id: 1, title: 'Under 18')
+      create_list(:user_with_rating, 20, movie: lotr_movie, age: age)
+      create(:rating, movie: lotr_movie)
+
+      MovieRating.refresh
+
+      get "/api/v1/movies/filter", params: { "age": "Under 18" }
+
+      parsed_body = JSON.parse(response.body)
+      first_movie = parsed_body.first
+      expect(first_movie).to eq({
+        "id" => lotr_movie.id,
+        "title" => "Lord of the Rings",
+        "rating" => "4.0",
+        "count" => "20.0"
+      })
+    end
+  end
 end

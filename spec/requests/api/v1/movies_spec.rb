@@ -11,8 +11,7 @@ RSpec.describe "Api::V1::Movies", type: :request do
 
   describe "GET /index" do
     it "returns the first 100 movies" do
-      create_list(:movie, 110, :with_ratings)
-      MovieRating.refresh
+      create_list(:movie, 110, count: 100)
 
       get "/api/v1/movies/index"
 
@@ -21,10 +20,10 @@ RSpec.describe "Api::V1::Movies", type: :request do
     end
 
     it "includes the ratings and count" do
-      movie = create(:movie, title: 'Harry Potter')
-      rating = create_list(:rating, 10, movie: movie, rating: 3.6)
-      rating = create_list(:rating, 10, movie: movie, rating: 3.3)
-      MovieRating.refresh
+      movie = create(:movie,
+                      title: 'Harry Potter',
+                      count: '20.0',
+                      rating: '3.45')
 
       get "/api/v1/movies/index"
 
@@ -38,32 +37,11 @@ RSpec.describe "Api::V1::Movies", type: :request do
       })
     end
 
-    context "ratings count" do
-      it "should be rounded to the nearest hundred" do
-        movie = create(:movie, title: 'Harry Potter')
-        ratings = create_list(:rating, 101, movie: movie)
-        MovieRating.refresh
-
-        get "/api/v1/movies/index"
-
-        parsed_body = JSON.parse(response.body)
-        first_movie = parsed_body.first
-        expect(first_movie).to include({
-          "count"=>"100.0"
-        })
-      end
-    end
-
     context "ranking" do
       it "ranks the movies by their rating and count" do
-        lotr_movie = create(:movie, title: 'Lord of the Rings')
-        m_movie = create(:movie, title: 'Matrix')
-        hr_movie = create(:movie, title: 'Harry Potter')
-        create_list(:rating, 20, movie: hr_movie, rating: 4)
-        create_list(:rating, 20, movie: lotr_movie, rating: 3)
-        create_list(:rating, 20, movie: m_movie, rating: 3)
-        create_list(:rating, 1, movie: m_movie, rating: 3)
-        MovieRating.refresh
+        lotr_movie = create(:movie, title: 'Lord of the Rings', rating: 3, count: 20)
+        m_movie = create(:movie, title: 'Matrix', rating: 3, count: 21)
+        hr_movie = create(:movie, title: 'Harry Potter', rating: 4, count: 21)
 
         get "/api/v1/movies/index"
 

@@ -10,7 +10,7 @@
 #
 # It's strongly recommended that you check this file into your version control system.
 
-ActiveRecord::Schema.define(version: 2021_11_13_172200) do
+ActiveRecord::Schema.define(version: 2021_11_14_120311) do
 
   # These are extensions that must be enabled in order to support this database
   enable_extension "pgcrypto"
@@ -23,6 +23,10 @@ ActiveRecord::Schema.define(version: 2021_11_13_172200) do
   create_table "movies", id: :serial, force: :cascade do |t|
     t.string "title", limit: 128
     t.string "genres", limit: 256
+    t.decimal "count"
+    t.decimal "rating"
+    t.index ["count"], name: "index_movies_on_count"
+    t.index ["rating"], name: "index_movies_on_rating"
   end
 
   create_table "occupations", id: :serial, force: :cascade do |t|
@@ -43,21 +47,5 @@ ActiveRecord::Schema.define(version: 2021_11_13_172200) do
     t.integer "occupation_id", limit: 2
     t.string "zipcode", limit: 16
   end
-
-
-  create_view "movie_ratings", materialized: true, sql_definition: <<-SQL
-      SELECT movies.id,
-      movies.title,
-          CASE
-              WHEN (count(ratings.*) > 100) THEN round((count(ratings.*))::numeric, '-2'::integer)
-              ELSE (count(ratings.*))::numeric
-          END AS count,
-      round(avg(ratings.rating), 2) AS rating
-     FROM (movies
-       LEFT JOIN ratings ON ((ratings.movie_id = movies.id)))
-    GROUP BY movies.id
-   HAVING (count(ratings.*) > 19);
-  SQL
-  add_index "movie_ratings", ["id"], name: "index_movie_ratings_on_id", unique: true
 
 end

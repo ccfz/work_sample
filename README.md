@@ -2,7 +2,7 @@
 1. `bundle install`
 2. `yarn install` 
 3. Run the migrations: `rails db:migrate`
-4. Add the database dump -> `psql -d test_ruby_movies_ccfz_development < movies_production_postgres.dum`
+4. Add the database dump -> `psql -d <database> < movies_production_postgres.dum`
 5. Run the rake task: `rails movies:rating`
 
 # Tests

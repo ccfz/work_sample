@@ -22,7 +22,7 @@ RSpec.describe 'Api::V1::Movies', type: :request do
     it 'includes the ratings and count' do
       movie = create(:movie,
                      title: 'Harry Potter',
-                     count: '20.0',
+                     count: 20,
                      rating: '3.45')
 
       get '/api/v1/movies/index'
@@ -33,7 +33,7 @@ RSpec.describe 'Api::V1::Movies', type: :request do
                                   'id' => movie.id,
                                   'title' => 'Harry Potter',
                                   'rating' => '3.45',
-                                  'count' => '20.0'
+                                  'count' => 20
                                 })
     end
 
@@ -69,7 +69,7 @@ RSpec.describe 'Api::V1::Movies', type: :request do
                                   'id' => lotr_movie.id,
                                   'title' => 'Lord of the Rings',
                                   'rating' => '4.0',
-                                  'count' => '20.0'
+                                  'count' => 20
                                 })
     end
   end

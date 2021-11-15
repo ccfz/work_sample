@@ -14,7 +14,7 @@ RSpec.describe Movie, type: :model do
       create_list(:user_with_rating, 20, movie: lotr_movie, age: allowed_age)
       create(:rating, movie: lotr_movie)
 
-      expect(Movie.with_ratings_by_age('35-44')[0].count).to eq(20.0)
+      expect(Movie.with_ratings_by_age('35-44')[0].count).to eq(20)
     end
   end
 end

@@ -23,7 +23,7 @@ ActiveRecord::Schema.define(version: 2021_11_14_120311) do
   create_table "movies", id: :serial, force: :cascade do |t|
     t.string "title", limit: 128
     t.string "genres", limit: 256
-    t.decimal "count"
+    t.integer "count"
     t.decimal "rating"
     t.index ["count"], name: "index_movies_on_count"
     t.index ["rating"], name: "index_movies_on_rating"

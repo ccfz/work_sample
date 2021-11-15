@@ -12,7 +12,7 @@ class Movie < ApplicationRecord
       .having('count(ratings) > 19')
       .group(:'movies.id')
   }
-  scope :with_ratings_by_age, lambda(age) {
+  scope :with_ratings_by_age, -> (age) {
     user_ids = User.joins(:age).where('ages.title': age).select(:id)
     with_rating.where('ratings.user_id': user_ids)
   }

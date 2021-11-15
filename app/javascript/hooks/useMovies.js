@@ -2,10 +2,8 @@ import { useState, useEffect } from 'react';
 
 const useMovies = () => {
   const [movies, setMovies] = useState([]);
-
-  const url = "/api/v1/movies/index";
-
-  useEffect(() => {
+  const baseUrl = '/api/v1/movies/'
+  function movieRequest(url) {
     fetch(url)
       .then(response => {
         if (response.ok) {
@@ -14,12 +12,28 @@ const useMovies = () => {
         throw new Error("Network response was not ok.");
       })
       .then(response => {
-        console.log(response[0])
         setMovies(response)
       })
+  }
+
+
+  function ageFilter(age) {
+    if (age === "0") {
+      const url = `${baseUrl}/index`;
+      movieRequest(url)
+    } else {
+      const url = `${baseUrl}filter?age=${age}`;
+      movieRequest(url)
+    }
+
+  }
+
+  useEffect(() => {
+    const url = `${baseUrl}/index`;
+    movieRequest(url)
   }, [])
 
-  return movies
+  return [movies, ageFilter]
 }
 
 export default useMovies;

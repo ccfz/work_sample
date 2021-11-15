@@ -2,6 +2,7 @@ Rails.application.routes.draw do
   namespace :api do
     namespace :v1 do
       get 'movies/index'
+      get 'movies/filter'
     end
   end
   root 'home#index'
